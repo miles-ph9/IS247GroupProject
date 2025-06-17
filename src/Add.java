@@ -1,5 +1,5 @@
 public class Add{
-    System.out.println("Hello");
-
-    System.out.println("Hi");
+    public static int add(int a, int b) {
+        return a + b;
+    }
 }
