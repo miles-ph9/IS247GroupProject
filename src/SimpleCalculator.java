@@ -5,8 +5,8 @@ public class SimpleCalculator {
         int b = 5;
 
         System.out.println("Addition: " + Add.add(a, b));
-        System.out.println("Subtraction: " + subtract(a, b));
-        System.out.println("Multiplication: " + multiply(a, b));
+        System.out.println("Subtraction: " + Subtract.subtract(a, b));
+        System.out.println("Multiplication: " + Multiply.multiply(a, b));
 
         }
     }
