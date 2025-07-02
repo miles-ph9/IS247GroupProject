@@ -14,13 +14,23 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        // get user input
         Scanner scanner = new Scanner(System.in);
         Notification emailNotification = new EmailNotification();
-
+        // create the savings acct wih the balance of 0, then a balance of 500 for the checking acct
         SavingsAccount savings = new SavingsAccount(0, emailNotification);
-        CheckingAccount checking = new CheckingAccount(500, emailNotification);
-        checking.linkSavings(savings);
+        CheckingAccount checking = null;
+        try {
+            checking = new CheckingAccount(500, emailNotification);
+        } catch (MyCustomException e) {
+            System.out.println("Error creating checking account: " + e.getMessage());
+        }
 
+        if (checking != null) {
+            checking.linkSavings(savings);
+        }
+
+        // loop through the menu until the user enters 'q'
         while (true) {
             System.out.println("\nWelcome to the Bank!");
             System.out.println("\n=== Banking Menu ===");
@@ -37,11 +47,22 @@ public class Main {
             try {
                 if (choice.equalsIgnoreCase("d")) {
                     System.out.print("Deposit to checking or savings? Please enter 'c' or 's': ");
-                    String target = scanner.next();
-
-                    System.out.print("Enter deposit amount: ");
-                    double amount = scanner.nextDouble();
                     scanner.nextLine();
+                    String target = scanner.nextLine();
+
+                    double amount;
+                    while (true) {
+                        System.out.print("Enter deposit amount: ");
+                        String input = scanner.nextLine();
+                        try {
+                            amount = Double.parseDouble(input);
+                            break;
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid input! Please enter a valid number.");
+                        }
+                    }
+
+
 
                     String defaultReason = "Deposit";
 
@@ -57,17 +78,21 @@ public class Main {
                     System.out.print("Enter withdrawal amount: ");
                     double amount = scanner.nextDouble();
                     scanner.nextLine();
-                    System.out.print("Enter reason for withdrawal (shopping, bills, food, transportation, entertainment): ");
+                    System.out.print("Enter reason for withdrawal (shopping, bills, food, transportation, entertainment, etc): ");
                     String reason = scanner.nextLine();
                     checking.withdraw(amount, reason);
+                    // this will show the transaction history
                 } else if (choice.equalsIgnoreCase("h")) {
                     System.out.println("\n--- Checking Account Transactions ---");
-                    checking.printTransactions();
+                    TransactionGenerics.printTransactionList(checking.getTransactions());
                     System.out.println("\n--- Savings Account Transactions ---");
-                    savings.printTransactions();
+                    TransactionGenerics.printTransactionList(savings.getTransactions());
+
+                    // this will show the categorized spending
                 } else if (choice.equalsIgnoreCase("s")) {
                     checking.printSpendingByCategory();
                 }
+                // my exception to handle any errors like lack of funds
             } catch (MyCustomException e) {
                 System.out.println("Banking Exception: " + e.getMessage());
             }
