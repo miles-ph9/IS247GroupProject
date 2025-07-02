@@ -85,6 +85,8 @@ public class Main {
                 } else if (choice.equalsIgnoreCase("h")) {
                     System.out.println("\n--- Checking Account Transactions ---");
                     TransactionGenerics.printTransactionList(checking.getTransactions());
+                    System.out.println("Checking Balance: $" + checking.getBalance());
+                    System.out.println("Total transactions amount: $" + TransactionGenerics.calculateTotalAmount(checking.getTransactions()));
                     System.out.println("\n--- Savings Account Transactions ---");
                     TransactionGenerics.printTransactionList(savings.getTransactions());
 

@@ -63,6 +63,10 @@ public CheckingAccount(double initialBalance, Notification notification) throws 
         return super.getBalance();
     }
 
+    public double getTotalTransactionAmount() {
+        return TransactionGenerics.calculateTotalAmount(this.getTransactions());
+    }
+
     //print the spending with its amount and how much was withdrawn
     public void printSpendingByCategory() {
         //it'll be storted highest amount to lowest amount
@@ -72,6 +76,7 @@ public CheckingAccount(double initialBalance, Notification notification) throws 
                 categoryTotals.put(transaction.reason, categoryTotals.getOrDefault(transaction.reason, 0.0) + transaction.amount);
             }
         }
+
 
 // sorts the reasons from the highest amount spent to the lowest, includes the API
         System.out.println("\n--- Spending by Category ---");
